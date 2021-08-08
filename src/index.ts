@@ -3,7 +3,15 @@ import cluster from "cluster";
 import os from "os";
 const cpus = os.cpus().length;
 
+/**
+ * router
+ */
 import userRouter from "./routers/user";
+
+/**
+ * middleware
+ */
+import { myLogger, requestTime } from "./middlewares/";
 
 // clusterモジュールの適用
 // isMasterはdeprecated
@@ -16,6 +24,9 @@ if (cluster.isPrimary) {
   }
 } else {
   const app = express();
+
+  app.use(myLogger);
+  app.use(requestTime);
 
   app.use("/user", userRouter);
 
