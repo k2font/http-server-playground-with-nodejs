@@ -3,6 +3,8 @@ import cluster from "cluster";
 import os from "os";
 const cpus = os.cpus().length;
 
+import userRouter from "./routers/user";
+
 // clusterモジュールの適用
 // isMasterはdeprecated
 // 推奨されるisPrimaryを指定する
@@ -14,6 +16,8 @@ if (cluster.isPrimary) {
   }
 } else {
   const app = express();
+
+  app.use("/user", userRouter);
 
   // GETリクエストを受け取るコード
   app.get("/", (req, res) => {
